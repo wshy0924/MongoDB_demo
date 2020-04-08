@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="order">
+	<resultMap id="BaseResultMap" type="map">
+		<!-- <id column="cfsb" jdbcType="VARCHAR"
+			property="cfsb" />-->
+		<!-- column对应数据库中字段名，property对应实体类中名,进行转化 -->
+		<result column="recipel_num" jdbcType="VARCHAR" property="cfsb" />
+		<result column="pay_orderid" jdbcType="VARCHAR" property="pay_orderid" />
+		<result column="total_price" jdbcType="VARCHAR" property="hjje" />
+		<result column="patient_id" jdbcType="VARCHAR" property="brid" />
+		<result column="his_paystatus" jdbcType="CHAR" property="his_paystatus" />
+		<result column="third_paystatus" jdbcType="VARCHAR" property="third_paystatus" />
+		<result column="patient_name" jdbcType="VARCHAR" property="name" />
+		<result column="third_refundid" jdbcType="VARCHAR" property="third_refundid" />
+		<result column="refund_status" jdbcType="VARCHAR" property="refund_status" />
+		<result column="date" jdbcType="CHAR" property="kdrq" />
+		<result column="endtime" jdbcType="CHAR" property="endtime" />
+		<result column="pay_type" jdbcType="CHAR" property="zffs" />
+		<result column="medical_type" jdbcType="VARCHAR" property="yllb" />
+		<result column="reserved" jdbcType="VARCHAR" property="reserved" />
+	</resultMap>
+
+	 <sql id="Base_Column_List">
+		his_paystatus, third_paystatus
+	</sql>
+    <!-- 数据库查询 -->
+    <select id="selectBycfsb" parameterType="map" resultMap="BaseResultMap">
+	     SELECT recipel_num, pay_orderid, total_price,
+		patient_id,his_paystatus,third_paystatus,patient_name,
+		third_refundid,date,medical_type,pay_type,refund_status,reserved
+	 FROM bz_pay_order 
+	    <where>
+	     
+	        recipel_num = #{cfsb,jdbcType=VARCHAR}
+	     
+	    </where>
+	</select>
+	
+ 	 <!-- 根据处方号和病人姓名查找 --> 
+<!--     <select id="selectBycfsbandname" parameterType="map" resultMap="BaseResultMap"> -->
+<!-- 	     SELECT recipel_num, pay_orderid, total_price, -->
+<!-- 		patient_id,his_paystatus,third_paystatus,patient_name, -->
+<!-- 		third_refundid,date,medical_type,pay_type,refund_status,reserved -->
+<!-- 	 FROM bz_pay_order WHERE 1 = 1 -->
+<!-- 	     <if test="cfsb!=null and cfsb !=''"> -->
+<!-- 			AND recipel_num = #{cfsb,jdbcType=VARCHAR} -->
+<!-- 		</if> -->
+<!-- 		<if test="name!=null and name !=''"> -->
+<!-- 			AND patient_name = #{name,jdbcType=VARCHAR} -->
+<!-- 		</if> -->
+	    
+<!-- 	</select> -->
+	  <select id="selectByname" parameterType="map" resultMap="BaseResultMap">
+	     SELECT recipel_num, pay_orderid, total_price,
+		patient_id,his_paystatus,third_paystatus,patient_name,
+		third_refundid,date,medical_type,pay_type,refund_status,reserved
+	 FROM bz_pay_order 
+	    <where>
+	     
+	        patient_name = #{name,jdbcType=VARCHAR}
+	     
+	    </where>
+	</select>
+	
+	
+	  <select id="selectBykdrq" parameterType="map" resultMap="BaseResultMap">
+	     SELECT recipel_num, pay_orderid, total_price,
+		patient_id,his_paystatus,third_paystatus,patient_name,
+		third_refundid,date,medical_type,pay_type,refund_status,reserved
+	 FROM bz_pay_order 
+	    <where>
+	     
+	         #{endtime,jdbcType=CHAR} >=  date 
+	         AND
+	        date >= #{kdrq,jdbcType=CHAR}
+	     
+	    </where>
+	</select>
+
+	
+	<select id="findAll" resultMap="BaseResultMap">
+     SELECT recipel_num, pay_orderid, total_price,
+		patient_id,his_paystatus,third_paystatus,patient_name,
+		third_refundid,date,medical_type,pay_type,refund_status,reserved
+	 FROM bz_pay_order 
+    </select>
+	
+	<!-- 数据库插入，不存在时插入，存在时更新数据 -->
+	<!-- id:表示此段sql执行语句的唯一标识，也是接口的方法名称 -->
+	<!-- parameterType:表示该sql语句中需要传入的参数， 类型要与对应的接口方法的类型一致 -->
+	<!-- resultMap:定义出参，调用已定义的<resultMap>映射管理器的id值 -->
+	<insert id="insertOrder" parameterType="map">
+		insert into bz_pay_order
+		(recipel_num, pay_orderid, total_price,
+		patient_id,his_paystatus,third_paystatus,patient_name,
+		third_refundid,date,medical_type,pay_type,reserved)
+		values
+		(#{cfsb,jdbcType=VARCHAR},
+		#{pay_orderid,jdbcType=VARCHAR},
+		#{hjje,jdbcType=CHAR},
+		#{brid,jdbcType=CHAR},
+		#{his_paystatus,jdbcType=CHAR}, 
+		#{third_paystatus,jdbcType=CHAR},
+		#{name,jdbcType=VARCHAR}, 
+		#{buyertel,jdbcType=CHAR},
+		#{kdrq,jdbcType=CHAR},
+		#{yllb,jdbcType=CHAR},
+		#{zffs,jdbcType=CHAR},
+		#{reserved,jdbcType=CHAR})
+		ON DUPLICATE KEY UPDATE 
+		recipel_num = #{cfsb,jdbcType=VARCHAR},
+		pay_orderid = #{pay_orderid,jdbcType=VARCHAR},
+		total_price = #{hjje,jdbcType=CHAR},
+		patient_id = #{brid,jdbcType=CHAR},
+		his_paystatus = #{his_paystatus,jdbcType=CHAR}, 
+		third_paystatus = #{third_paystatus,jdbcType=CHAR},
+		patient_name = #{name,jdbcType=VARCHAR}, 
+		third_refundid = #{buyertel,jdbcType=CHAR},
+		date = #{kdrq,jdbcType=CHAR},
+		medical_type = #{yllb,jdbcType=CHAR},
+		pay_type = #{zffs,jdbcType=CHAR},
+		reserved = #{reserved,jdbcType=CHAR}
+	</insert>
+	
+	<update id="updateByCfsb" parameterType="map">
+	    update bz_pay_order
+	    <set>
+		  <!--<if test="his_paystatus != 1">
+	        his_paystatus = #{his_paystatus,jdbcType=CHAR},
+	        third_paystatus =  #{third_paystatus,jdbcType=CHAR},
+	      </if>-->   
+	    cfsb =#{cfsb,jdbcType=VARCHAR},
+		hjje=#{hjje,jdbcType=CHAR},
+		brid=#{brid,jdbcType=CHAR},
+		his_paystatus=#{his_paystatus,jdbcType=CHAR}, 
+		third_paystatus=#{third_paystatus,jdbcType=CHAR},
+		name=#{name,jdbcType=VARCHAR}, 
+		buyertel=#{buyertel,jdbcType=CHAR},
+		kdrq=#{kdrq,jdbcType=CHAR},
+		yllb=#{yllb,jdbcType=CHAR},
+		zffs=#{zffs,jdbcType=CHAR},
+		reserved=#{reserved,jdbcType=CHAR},
+	    </set>
+	    where recipel_num = #{cfsb,jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 数据库更新 -->
+	<update id="updateOrderByCfsb" parameterType="map">
+	    update bz_pay_order
+	    <set>
+		  <!--<if test="his_paystatus != 1">
+	        his_paystatus = #{his_paystatus,jdbcType=CHAR},
+	        third_paystatus =  #{third_paystatus,jdbcType=CHAR},
+	      </if>-->
+	      	his_paystatus = #{his_paystatus,jdbcType=CHAR},
+	        third_paystatus =  #{third_paystatus,jdbcType=CHAR},
+	        pay_type = #{zffs,jdbcType=CHAR},
+	        recipel_num = #{cfsb,jdbcType=VARCHAR},
+	        pay_orderid = #{pay_orderid,jdbcType=VARCHAR},
+	        refund_status = #{refund_status,jdbcType=VARCHAR},
+	    </set>
+	    where recipel_num = #{cfsb,jdbcType=VARCHAR}
+	</update>
+</mapper>
