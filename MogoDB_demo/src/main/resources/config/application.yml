@@ -25,8 +25,8 @@ spring:
   data:
     mongodb:
 #      database: test
-      database: IntelligentGuidance
-      uri: mongodb://localhost:27017#填写自己的mongodb数据库
+     
+      uri: mongodb://localhost:端口号#填写自己的mongodb数据库
     
 ---
 #开发测试环境
@@ -46,7 +46,7 @@ spring:
   datasource:
     username: root
     password: '######'
-    url: jdbc:mysql://www.ggzzrj.xyz:6609/agg_pay?useUnicode=true&useSSL=false&characterEncoding=utf-8&serverTimezone=UTC&oldsyntax=true 
+    url: jdbc:mysql://ip/agg_pay?useUnicode=true&useSSL=false&characterEncoding=utf-8&serverTimezone=UTC&oldsyntax=true 
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
     
@@ -57,7 +57,7 @@ spring:
   datasource:
     username: root
     password: '######'
-    url: jdbc:mysql://106.12.24.238:6609/agg_pay?useUnicode=true&useSSL=false&characterEncoding=utf-8&serverTimezone=UTC&oldsyntax=true 
+    url: jdbc:mysql://ip/agg_pay?useUnicode=true&useSSL=false&characterEncoding=utf-8&serverTimezone=UTC&oldsyntax=true 
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver
   
