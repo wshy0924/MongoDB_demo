@@ -2,12 +2,7 @@
 #  port: 8080
   
 #para: 
-#  serverip: 127.0.0.1
-#  serverport: 8888
-#  wxappid: wx6a58006d3f0ab6ac
-#  wxsecret: 65ccc078f8893ffef4e5b84914e48160
-#  aliappid: 2018081161083118
-#  hisappid: HdnS/YJ1rqWnKuTfk3rNBKOMDAWh4v1J
+
   
   # MyBatis配置  
 mybatis:
